@@ -1,6 +1,5 @@
 package com.ideas2it.mentor.service;
 
-import com.ideas2it.mentor.dto.MentorDto;
 import com.ideas2it.model.Mentor;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +11,10 @@ public interface MentorService {
      * This method return mentor object as argument to
      * mentor Dao
      * </p>
-     * @param mentorDto - Mentor Dto Object
+     * @param mentor - Mentor Dto Object
      *
      */
-    MentorDto addMentor(MentorDto mentorDto);
+    Mentor addMentor(Mentor mentor);
 
     /**
      * <p>

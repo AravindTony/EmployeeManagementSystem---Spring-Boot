@@ -23,8 +23,8 @@ public class SalaryAccount {
     @Column (name = "name")
     private String bankName;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.EAGER)
-    private Employee employee;
+//    @OneToOne(mappedBy = "account", fetch = FetchType.EAGER)
+//    private Employee employee;
     
     /** 
     * This Constructor Initialize a new name and list
@@ -52,13 +52,13 @@ public class SalaryAccount {
 	return bankName;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-	this.employee = employee;
-    }   
+//    public Employee getEmployee() {
+//        return employee;
+//    }
+//
+//    public void setEmployee(Employee employee) {
+//	this.employee = employee;
+//    }
 
     public void setAccountId(int accountId) {
 	this.accountId = accountId;

@@ -2,6 +2,7 @@ package com.ideas2it.department.service;
 
 import com.ideas2it.department.dto.DepartmentDto;
 import com.ideas2it.model.Department;
+import com.ideas2it.model.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,17 +24,17 @@ public interface DepartmentService {
      * @return Departments as the Map objects
      *
      */
-    List<DepartmentDto> getDepartments();
+    List<Department> getDepartments();
 
     /** 
      * <p>
      * This method passes department object as argument to  
      * department Dao
      * </p>
-     * @param departmentDto - Department Dto Object
+     * @param department - Department Entity Object
      *
      */
-    DepartmentDto addDepartment(DepartmentDto departmentDto);
+    Department addDepartment(Department department);
 
     /**
      * <p>
@@ -55,14 +56,21 @@ public interface DepartmentService {
      * @return Department - Department as the Object
      * 
      */
-    DepartmentDto getDepartmentById(int departmentId);
+    Department getDepartmentById(int departmentId);
 
     /**
      * <p>
      * This method update Department name with id
      * </p>
-     * @param departmentDto - Department as the Object
+     * @param department - Department as the Object
      * 
      */
-    DepartmentDto updateDepartmentRecord(int id, DepartmentDto departmentDto);
+    Department updateDepartmentRecord(int id, Department department);
+
+    /**
+     * This method return the Employees by the Department
+     * @param departmentId - ID of the Department
+     * @return - List of Employees
+     */
+    List<Employee> getEmployeesByDepartmentId(int departmentId);
 }

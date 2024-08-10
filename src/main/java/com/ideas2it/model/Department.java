@@ -1,5 +1,6 @@
 package com.ideas2it.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +35,8 @@ public class Department {
     private boolean isDeleted = false;
 
     @OneToMany (mappedBy = "department", fetch = FetchType.EAGER)
-    Set<Employee> employees;
+    @JsonManagedReference
+    private Set<Employee> employees;
     
     /** 
     * This Constructor Initialize a new name and list

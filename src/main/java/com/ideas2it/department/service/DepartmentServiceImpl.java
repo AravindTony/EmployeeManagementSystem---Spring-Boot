@@ -1,16 +1,13 @@
 package com.ideas2it.department.service;
 
 import com.ideas2it.department.dao.DepartmentDao;
-import com.ideas2it.department.departmentMapping.DepartmentMapper;
-import com.ideas2it.department.dto.DepartmentDto;
 import com.ideas2it.model.Department;
+import com.ideas2it.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.ideas2it.department.departmentMapping.DepartmentMapper.convertToDto;
 
 /**
  * <p>
@@ -25,40 +22,46 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     DepartmentDao departmentDao;
 
-    public List<DepartmentDto> getDepartments() {
-        List<DepartmentDto> result = new ArrayList<>();
-        Iterable<Department> departments = departmentDao.findAll();
-        for (Department department : departments) {
-            result.add(DepartmentMapper.convertToDto(department));
-        }
-        return result;
+    public List<Department> getDepartments() {
+        return (List<Department>) departmentDao.findAll();
     }
 
-    @Override
-    public DepartmentDto addDepartment(DepartmentDto departmentDto) {
-        Department department = DepartmentMapper.convertToEntity(departmentDto);
-        Department savedDepartment = departmentDao.save(department);
-        return DepartmentMapper.convertToDto(savedDepartment);
+    public Department addDepartment(Department department) {
+        return departmentDao.save(department);
     }
     
     @Override
     public void deleteDepartment(int id) {
- 	    departmentDao.deleteById(id);
+        Department department = departmentDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found with ID: " + id));
+        department.setIsDeleted(true);
+        departmentDao.save(department);
     }
 
     @Override
-    public DepartmentDto getDepartmentById(int departmentId) {
+    public Department getDepartmentById(int departmentId) {
         Department department = departmentDao.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Department not found with ID: " + departmentId));
-        return DepartmentMapper.convertToDto(department);
+        return department;
     }
 
     @Override
-    public DepartmentDto updateDepartmentRecord(int id, DepartmentDto departmentDto) {
+    public Department updateDepartmentRecord(int id, Department department) {
         Department existingDepartment = departmentDao.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Department not found with ID: " + id));
-        existingDepartment.setDepartmentName(departmentDto.getName());
-        Department updatedDepartment = departmentDao.save(existingDepartment);
-        return DepartmentMapper.convertToDto(updatedDepartment);
+        existingDepartment.setDepartmentName(department.getDepartmentName());
+        return departmentDao.save(existingDepartment);
+    }
+
+    public List<Employee> getEmployeesByDepartmentId(int departmentId) {
+        Department department = departmentDao.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Department Id not found :" + departmentId));
+        List<Employee> activeEmployee = new ArrayList<>();
+        for(Employee employee : department.getEmployees()) {
+            if (employee.getIsDeleted()) {
+                activeEmployee.add(employee);
+            }
+        }
+        return activeEmployee;
     }
 }

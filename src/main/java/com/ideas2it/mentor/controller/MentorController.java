@@ -2,6 +2,7 @@ package com.ideas2it.mentor.controller;
 
 import com.ideas2it.mentor.dto.MentorDto;
 import com.ideas2it.mentor.service.MentorService;
+import com.ideas2it.model.Mentor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,22 @@ public class MentorController {
      */
 	@PostMapping("")
     public MentorDto addMentor(@RequestBody MentorDto mentorDto) {
-		return mentorService.addMentor(mentorDto);
+		return convertToDto(mentorService.addMentor(convertToEntity(mentorDto)));
 	}
 
     @DeleteMapping("{id}")
 	public void deleteMentor(@PathVariable("id") int mentorId) {
 		mentorService.deleteMentor(mentorId);
+	}
+
+	public static MentorDto convertToDto(Mentor mentor) {
+		return new MentorDto(mentor.getMentorId(), mentor.getMentorName());
+	}
+
+	public static Mentor convertToEntity(MentorDto mentorDto) {
+		Mentor mentor = new Mentor();
+		mentor.setMentorId(mentorDto.getId());
+		mentor.setMentorName(mentorDto.getName());
+		return mentor;
 	}
 }
