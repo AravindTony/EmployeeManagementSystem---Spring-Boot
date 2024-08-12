@@ -1,16 +1,19 @@
-package com.ideas2it.department.controller;
+package com.ideas2it.controller;
 
-import com.ideas2it.department.dto.DepartmentDto;
-import com.ideas2it.department.service.DepartmentService;
-import com.ideas2it.model.Department;
-import com.ideas2it.model.Employee;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ideas2it.dto.DepartmentDto;
+import com.ideas2it.service.DepartmentService;
+import com.ideas2it.model.Department;
+import com.ideas2it.model.Employee;
 
 /**
  *<p>
@@ -22,9 +25,9 @@ import java.util.List;
  * @author Aravind
  */
 @RestController
-@RequestMapping ("department")
+@RequestMapping ("api/v1/department")
 public class DepartmentController {
-
+    private static final Logger logger = LogManager.getLogger();
     @Autowired
     private DepartmentService departmentService;
 
@@ -35,6 +38,7 @@ public class DepartmentController {
      */
     @PostMapping ("/add")
     public DepartmentDto addDepartment(@RequestBody DepartmentDto departmentDto) {
+        logger.info("Department Added Successfully..");
 	    return convertToDto(departmentService.addDepartment(convertToEntity(departmentDto)));
     }
 
@@ -43,7 +47,7 @@ public class DepartmentController {
         List<DepartmentDto> result = new ArrayList<>();
         List<Department> Departments = departmentService.getDepartments();
         for (Department department : Departments) {
-            if (department.getIsDeleted()){
+            if (!department.isDeleted()){
                 result.add(convertToDto(department));
             }
         }
@@ -53,16 +57,19 @@ public class DepartmentController {
      * <p>
      * This method to delete a department 
      * in the Department Database
-     * @param departmentId - ID of the Department
      * </p>
+     * @param departmentId - ID of the Department
      */
     @DeleteMapping("/delete/{id}")
     public void deleteDepartment(@PathVariable("id") int departmentId) {
 	    departmentService.deleteDepartment(departmentId);
+        logger.info("Department deleted Successfully..");
     }
 
     /**
+     * <p>
      * This method return the Department By ID
+     * </p>
      * @param departmentId - ID of the department
      * @return DepartmentDto as Department Json Object
      */
@@ -75,6 +82,8 @@ public class DepartmentController {
      * <p>
      * This method to Update an Department Name with id
      * </p>
+     * @param departmentId - Department ID given by User
+     * @return DepartmentDto - Department as Dto Object
      */
     @PutMapping("/update/{id}")
     public DepartmentDto updateDepartment(@PathVariable("id") int departmentId, @RequestBody DepartmentDto departmentDto) {
@@ -92,6 +101,13 @@ public class DepartmentController {
         return department;
     }
 
+    /**
+     * <p>
+     * This method return the Employees by Department ID
+     * </p>
+     * @param departmentId - Department ID given by the User
+     * @return - Employee - List of Employee
+     */
     @GetMapping("/employees/{departmentId}")
     public ResponseEntity<List<Employee>> getEmployeesByDepartmentId(@PathVariable("departmentId") int departmentId) {
         List<Employee> employees = departmentService.getEmployeesByDepartmentId(departmentId);

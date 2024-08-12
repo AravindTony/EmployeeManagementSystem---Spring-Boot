@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /** 
 * <p>This class is used to get and set the 
@@ -18,6 +20,8 @@ import jakarta.persistence.Table;
 * @author Aravind
 */
 
+@Getter
+@Setter
 @Entity
 @Table (name = "mentors")
 public class Mentor {
@@ -46,40 +50,4 @@ public class Mentor {
     }
 
     public Mentor() { }
-
-    public int getMentorId() {
-	return mentorId;
-    }
-
-    public String getMentorName() {
-	return mentorName;
-    }
-
-    public boolean getIsDeleted() {
-	return isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-	this.isDeleted = isDeleted;
-    }
-
-    public void setName(String mentorName) {
-        this.mentorName = mentorName;
-    }
-
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setMentorId(int mentorId) {
-	this.mentorId = mentorId;
-    }
-
-    public void setMentorName(String mentorName) {
-	this.mentorName = mentorName;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-	this.employees = employees;
-    }
 }

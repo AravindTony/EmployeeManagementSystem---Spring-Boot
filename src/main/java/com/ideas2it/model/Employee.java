@@ -1,22 +1,15 @@
 package com.ideas2it.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ideas2it.util.DateCalculation;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Set;
+import com.ideas2it.util.DateCalculation;
 
 /**
 * <p>This class is used to get and set the 
@@ -26,7 +19,10 @@ import java.util.Set;
 * Experience and List of Mentors for the Employee</p>
 * @author Aravind
 */
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "employees")
 public class Employee {		
@@ -50,7 +46,7 @@ public class Employee {
     @JsonBackReference
     private Department department;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private SalaryAccount account;
 
@@ -72,33 +68,6 @@ public class Employee {
         inverseJoinColumns = @JoinColumn(name = "mentor_id"))
     private Set<Mentor> mentors;
 
-    /** 
-    * Employee Constructor initializes the Credentials when add new Record
-    *
-    * @param employeeName - Name of the Employee
-    * @param dateOfBirth - Date of Birth of the Employee
-    * @param mobileNumber - Mobile Number of the Employee
-    * @param employeeEmail - EmailId of the Employee
-    * @param qualification - Qualification of the Employee
-    * @param experience - Experience of the Employee Totally
-    * @param department - Department as an Object
-    * @param account - Account as the Salary Account Object
-    */
-    public Employee(String employeeName, Department department,            
-	    LocalDate dateOfBirth, long mobileNumber, String employeeEmail, 
-	    String qualification, int experience, SalaryAccount account) {
-	    this.employeeName = employeeName;
-        this.dateOfBirth = dateOfBirth;
-        this.mobileNumber = mobileNumber;
-        this.employeeEmail = employeeEmail;
-        this.qualification = qualification;
-        this.experience = experience;
-        this.department = department;
-        this.account = account;
-    }
-
-    public Employee() { }
-
     public String getNames() {
         StringBuilder mentorList = new StringBuilder();
         for (Mentor mentor : mentors) {
@@ -106,86 +75,6 @@ public class Employee {
         }	
 	    return mentorList.toString();
     }
-
-    public Set<Mentor> getMentors() {
-        return mentors;
-    }
-    
-    public int getEmployeeId() {                                                  
-	return employeeId;
-    }
-    
-    public String getEmployeeName() {	
-	return employeeName;
-    }
-
-    public Department getDepartment() {
-	return department;
-    }
-
-    public SalaryAccount getAccount() {
-	return account;
-    }
-
-    public LocalDate getDateOfBirth() { return dateOfBirth; }
-    
-    public long getMobileNumber() {
-        return mobileNumber;
-    }
-    
-    public String getEmployeeEmail() {
-        return employeeEmail;
-    }
- 
-    public String getQualification() {
-	return qualification;
-    }
-    
-    public int getExperience() {
-	return experience;
-    }
-
-    public boolean getIsDeleted() {
-	return isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-	this.isDeleted = isDeleted;
-    }
-
-    public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
-
-    public void setEmployeeName(String employeeName) {                              
-	this.employeeName = employeeName;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-	this.dateOfBirth = dateOfBirth;
-    }
-
-    public void setMobileNumber(long mobileNumber) {
-	this.mobileNumber = mobileNumber;
-    }
-
-    public void setEmployeeEmail(String employeeEmail) {
-	this.employeeEmail = employeeEmail;
-    }
-
-    public void setQualification(String qualification) {
-	this.qualification = qualification;
-    }
-
-    public void setExperience(int experience) {
-        this.experience = experience;
-    }
- 
-    public void setDepartment(Department department) {
-	this.department = department;
-    }
-
-    public void setAccount(SalaryAccount account) { this.account = account; }
-
-    public void setMentors(Set<Mentor> mentors) { this.mentors = mentors; }
 
     public String getAge() {
 	    if (dateOfBirth != null) {
