@@ -2,6 +2,9 @@ package com.ideas2it.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +34,8 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     private int employeeId;	
-    
-    @Column (name = "name")					    
+
+    @Column (name = "name", nullable = false)
     private String employeeName;
 
     @Column (name = "date_of_birth")
@@ -50,7 +53,7 @@ public class Employee {
     @JoinColumn(name = "account_id")
     private SalaryAccount account;
 
-    @Column (name = "email")
+    @Column (name = "email", unique = true)
     private String employeeEmail;
 
     @Column (name = "qualification")

@@ -31,7 +31,7 @@ public class Mentor {
     @Column (name = "id")
     private int mentorId;
 
-    @Column (name = "name", unique = true)
+    @Column (name = "name", unique = true, nullable = false)
     private String mentorName;
 
     @Column (name = "is_deleted")

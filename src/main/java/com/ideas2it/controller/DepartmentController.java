@@ -2,6 +2,7 @@ package com.ideas2it.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class DepartmentController {
      * @return DepartmentDto {@link DepartmentDto}- DepartmentDto as Object
      */
     @PostMapping
-    public ResponseEntity<DepartmentDto> addDepartment(@RequestBody DepartmentDto departmentDto) {
+    public ResponseEntity<DepartmentDto> addDepartment(@Valid @RequestBody DepartmentDto departmentDto) {
 	    DepartmentDto createdDepartmentDto =  departmentService.addDepartment(departmentDto);
         logger.info("Department Created Successfully with Name : {}", createdDepartmentDto.getName());
         return new ResponseEntity<>(createdDepartmentDto, HttpStatus.OK);
